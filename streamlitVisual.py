@@ -1,10 +1,6 @@
 import streamlit as st
 import altair as alt
 import pandas as pd
-import os
-
-# Set working directory
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Main Streamlit app
 st.title("Inside Airbnb: Interactive Data Dashboard")
@@ -23,10 +19,10 @@ except FileNotFoundError:
 # Visualization 1: Estimated Occupancy vs. Number of Beds
 def visualization1(data):
     chart = alt.Chart(data, title="Estimated Occupancy vs. Number of Beds (Guest Preference)").mark_bar(size=20).encode(
-        x=alt.X('beds:Q', title='Number of Beds'),
+        x=alt.X('beds:N', title='Number of Beds'),
         y=alt.Y('avg_occupancy:Q', title='Estimated Occupancy (Last 365 Days)')
     ).transform_aggregate(
-        avg_occupancy='mean(estimated_occupancy_l365d):Q',
+        avg_occupancy='mean(estimated_occupancy_l365d)',
         groupby=['beds']
     ).properties(width=600, height=400)
     return chart
@@ -36,10 +32,10 @@ def visualization2(data):
     bars = alt.Chart(data, title="Listings Count by Number of Beds (Host Preference)").transform_aggregate(
         count='count()', groupby=['beds']
     ).mark_bar(size=20).encode(
-        x=alt.X('beds:Q', title='Number of Beds'),
+        x=alt.X('beds:N', title='Number of Beds'),
         y=alt.Y('count:Q', title='Listing Count'),
         color=alt.Color('beds:N'),
-        tooltip=['beds:Q', 'count:Q']
+        tooltip=['beds:N', 'count:Q']
     )
     return bars
 
@@ -93,9 +89,13 @@ if not data.empty:
         (data['neighbourhood_cleansed'].isin(neighborhoods))
     ]
 
-    # Display visualizations
+    # SECTION 1: Bed Preferences
+    st.subheader("🏨 Guest & Host Bed Preferences")
     st.altair_chart(visualization1(data_filtered), use_container_width=True)
     st.altair_chart(visualization2(data_filtered), use_container_width=True)
+
+    # SECTION 2: Room Type Distribution and Value-for-Money Patterns
+    st.subheader("📊 Room Types and Value Patterns")
     st.altair_chart(visualization3(data_filtered), use_container_width=True)
     st.altair_chart(visualization4(data_filtered), use_container_width=True)
 
