@@ -95,6 +95,9 @@ if not data.empty:
     st.altair_chart(visualization1(data_filtered), use_container_width=True)
     st.altair_chart(visualization2(data_filtered), use_container_width=True)
 
+    # Horizontal separator
+    st.markdown("---")
+
     # SECTION 2: Room Type Distribution and Value-for-Money Patterns
     st.subheader("📊 Room Types and Value Patterns")
     st.altair_chart(visualization3(data_filtered), use_container_width=True)
