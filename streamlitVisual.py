@@ -18,7 +18,7 @@ except FileNotFoundError:
 
 # Visualization 1: Estimated Occupancy vs. Number of Beds
 def visualization1(data):
-    chart = alt.Chart(data, title="Estimated Occupancy vs. Number of Beds (Guest Preference)").mark_bar(size=20).encode(
+    chart = alt.Chart(data, title="Estimated Occupancy vs. Number of Beds (Guest Preference)").mark_bar(size=40).encode(
         x=alt.X('beds:N', title='Number of Beds', axis=alt.Axis(labelAngle=0)),
         y=alt.Y('avg_occupancy:Q', title='Estimated Occupancy (Last 365 Days)')
     ).transform_aggregate(
@@ -31,7 +31,7 @@ def visualization1(data):
 def visualization2(data):
     bars = alt.Chart(data, title="Listings Count by Number of Beds (Host Preference)").transform_aggregate(
         count='count()', groupby=['beds']
-    ).mark_bar(size=20).encode(
+    ).mark_bar(size=40).encode(
         x=alt.X('beds:N', title='Number of Beds', axis=alt.Axis(labelAngle=0)),
         y=alt.Y('count:Q', title='Listing Count'),
         color=alt.Color('beds:N'),
